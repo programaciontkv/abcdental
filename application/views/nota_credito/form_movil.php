@@ -525,6 +525,7 @@
       var ctr_inv='<?php echo $ctrl_inv;?>';
       var dec='<?php echo $dec;?>';
       var dcc='<?php echo $dcc;?>';
+      var iva_temp=0;
       var valida_asiento='<?php echo $valida_asiento;?>';
       window.onload = function () {
         cam_motivo();
@@ -930,6 +931,8 @@
                                 $('#total_valor').val(parseFloat(dt.fac_total_valor).toFixed(dec));
                                 $('#subtotal').val(parseFloat(dt.fac_subtotal).toFixed(dec));
                                 $('#lista').html(dt.detalle);
+                                $('#lb1').html("SUBTOTAL "+dt.iva+ "%" );
+                                iva_temp =dt.iva;
                                 $('#count_detalle').val(dt.cnt_detalle);
                                 $('#saldo').val(dt.saldo);
                                 $('#lista_encabezado').html('');
@@ -957,7 +960,7 @@
                             return false;
                       }
                     },
-                    url: base_url+"nota_credito/load_producto/"+vl+"/"+inven+"/"+ctr_inv+"/"+emi_id.value,
+                    url: base_url+"nota_credito/load_producto/"+vl+"/"+inven+"/"+ctr_inv+"/"+emi_id.value+"/"+fac_id.value,
                     type: 'JSON',
                     dataType: 'JSON',
                     success: function (dt) {
@@ -1365,15 +1368,21 @@
                     tdsc = (round(tdsc,dec) * 1) + (round(d,dec) * 1);
                     tice = (round(tice,dec) * 1) + (round(pic,dec) * 1);
 
-                    if (ob == '14') {
-                        t12 = (round(t12,dec) * 1 + round(vt,dec) * 1);
-                        tiva = ((round(tice,dec) + round(t12,dec)) * 14 / 100);
-                    }
+                    if (ob != '0' && ob != 'EX' && ob != 'NO') {
+                     t12 = (round(t12, dec) * 1 + round(vt, dec) * 1);
+                     tiva = ((round(tice, dec) + round(t12, dec)) * iva_temp / 100);
+                   }
 
-                    if (ob == '12') {
-                        t12 = (round(t12,dec) * 1 + round(vt,dec) * 1);
-                        tiva = ((round(tice,dec) + round(t12,dec)) * 12 / 100);
-                    }
+
+                    // if (ob == '14') {
+                    //     t12 = (round(t12,dec) * 1 + round(vt,dec) * 1);
+                    //     tiva = ((round(tice,dec) + round(t12,dec)) * 14 / 100);
+                    // }
+
+                    // if (ob == '12') {
+                    //     t12 = (round(t12,dec) * 1 + round(vt,dec) * 1);
+                    //     tiva = ((round(tice,dec) + round(t12,dec)) * 12 / 100);
+                    // }
                     if (ob == '0') {
                         t0 = (round(t0,dec) * 1 + round(vt,dec) * 1);
                     }
@@ -1486,15 +1495,21 @@
                     tdsc = (round(tdsc,dec) * 1) + (round(d,dec) * 1);
                     tice = (round(tice,dec) * 1) + (round(pic,dec) * 1);
 
-                    if (ob == '14') {
-                        t12 = (round(t12,dec) * 1 + round(vt,dec) * 1);
-                        tiva = ((round(tice,dec) + round(t12,dec)) * 14 / 100);
-                    }
+                    // if (ob == '14') {
+                    //     t12 = (round(t12,dec) * 1 + round(vt,dec) * 1);
+                    //     tiva = ((round(tice,dec) + round(t12,dec)) * 14 / 100);
+                    // }
 
-                    if (ob == '12') {
-                        t12 = (round(t12,dec) * 1 + round(dsc,dec) * 1);
-                        tiva = ((round(tice,dec) + round(t12,dec)) * 12 / 100);
-                    }
+                    // if (ob == '12') {
+                    //     t12 = (round(t12,dec) * 1 + round(dsc,dec) * 1);
+                    //     tiva = ((round(tice,dec) + round(t12,dec)) * 12 / 100);
+                    // }
+
+                    if (ob != '0' && ob != 'EX' && ob != 'NO') {
+                     t12 = (round(t12, dec) * 1 + round(vt, dec) * 1);
+                     tiva = ((round(tice, dec) + round(t12, dec)) * iva_temp / 100);
+                   }
+                   
                     if (ob == '0') {
                         t0 = (round(t0,dec) * 1 + round(vt,dec) * 1);
                     }
